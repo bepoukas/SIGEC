@@ -273,11 +273,11 @@ ul.tight{margin:0;padding-left:18px} ul.tight li{margin-bottom:5px}
   <nav class="side" aria-label="Modules">
     <button data-v="tableau"><span class="k">01</span>Tableau de bord</button>
     <button data-v="registre"><span class="k">02</span>Registre des contribuables</button>
-    <button data-v="perception"><span class="k">03</span>Perception &amp; paiements</button>
-    <button data-v="controle"><span class="k">04</span>Contrôle &amp; anti-fraude</button>
+    <button data-v="perception"><span class="k">03</span>Perception et paiements</button>
+    <button data-v="controle"><span class="k">04</span>Contrôle et anti-fraude</button>
     <button data-v="audit"><span class="k">05</span>Journal d'audit</button>
     <div class="sep"></div>
-    <button data-v="architecture"><span class="k">06</span>Architecture &amp; feuille de route</button>
+    <button data-v="architecture"><span class="k">06</span>Architecture et feuille de route</button>
   </nav>
   <main><div class="wrap" id="view"></div></main>
 </div>
@@ -303,8 +303,8 @@ const IMPOTS={
 const CANAUX=["M-Pesa","Airtel Money","Orange Money","Banque (virement)","Guichet espèces"];
 const NOMS=["Mukendi","Kalonji","Assani","Amisi","Kasongo","Bulambo","Lukusa","Omari","Saidi","Makumbi","Ramazani","Kabila","Shabani","Tshibanda","Lumbala","Feruzi","Mwamba","Bahati","Yuma","Selemani","Alimasi","Kitenge","Mapendo","Ngoy"];
 const PRENOMS=["Jean","Marie","Aimé","Furaha","Patrick","Esther","Didier","Sifa","Héritier","Neema","Joseph","Rachel","Christian","Jeanne"];
-const ENTS=["Ets {N} & Fils","{N} Commerce SARL","Maniema Agro {N}","Hôtel {N} Kindu","Transport Lualaba {N}","Coopérative minière {N}","Pharmacie {N}","Quincaillerie {N}","Boulangerie {N}","{N} Logistique SARL"];
-const SECT={"Personne physique":"Location immobilière","PME":"Commerce","Grande entreprise":"Services","Exploitant minier artisanal":"Mines (cassitérite, or)","Transporteur":"Transport routier & fluvial"};
+const ENTS=["Ets {N} et Fils","{N} Commerce SARL","Maniema Agro {N}","Hôtel {N} Kindu","Transport Lualaba {N}","Coopérative minière {N}","Pharmacie {N}","Quincaillerie {N}","Boulangerie {N}","{N} Logistique SARL"];
+const SECT={"Personne physique":"Location immobilière","PME":"Commerce","Grande entreprise":"Services","Exploitant minier artisanal":"Mines (cassitérite, or)","Transporteur":"Transport routier et fluvial"};
 const IMP_BY_TYPE={"Personne physique":["IF","IRL"],"PME":["TPA","IF","IVA"],"Grande entreprise":["TPA","IF","IVA","IRL"],"Exploitant minier artisanal":["TMA","IVA"],"Transporteur":["IVA","TPA"]};
 
 function wpick(items,w){const s=w.reduce((a,b)=>a+b,0);let x=R()*s;for(let i=0;i<items.length;i++){x-=w[i];if(x<=0)return items[i]}return items[0]}
@@ -513,7 +513,7 @@ function vRegistre(){
       ${sel?fiche(sel):`<div class="panel"><h3>Fiche contribuable</h3><p class="muted">Sélectionnez une ligne pour voir l'historique, le solde et l'état du quitus fiscal.</p></div>`}
       <div class="panel"><header><h3>Immatriculer un contribuable</h3></header>
       <form id="fNew" class="form" novalidate>
-        <label class="f full" for="nNom">Nom ou raison sociale<input id="nNom" required placeholder="Ex. Ets Amisi & Fils"></label>
+        <label class="f full" for="nNom">Nom ou raison sociale<input id="nNom" required placeholder="Ex. Ets Amisi et Fils"></label>
         <label class="f" for="nType">Catégorie<select id="nType">${TYPES.map(t=>`<option>${t}</option>`).join("")}</select></label>
         <label class="f" for="nTerr">Ressort<select id="nTerr">${TERR.map(t=>`<option>${t}</option>`).join("")}</select></label>
         <label class="f full" for="nTel">Téléphone (sert au paiement mobile)<input id="nTel" placeholder="+243 81 234 5678"></label>
@@ -552,14 +552,14 @@ bind.registre=()=>{
     S.c.push(c);logA(userName(),"Immatriculation",c.ifu+" · "+nom+" · "+terr);S.selected=c.ifu;rq="";render();toast("IFU "+c.ifu+" attribué à "+nom)};
 };
 
-/* ============ 03 Perception & paiements ============ */
+/* ============ 03 Perception et paiements ============ */
 let npIFU="", payFor=null;
 S.viewNP=S.np[S.np.length-1].no;
 function vPerception(){
   const recent=S.np.slice().sort((a,b)=>b.date-a.date).slice(0,14);
   const c=npIFU&&byIFU(npIFU);
   return `
-  <div class="head"><div><div class="eyebrow">Chaîne assiette → liquidation → recouvrement</div><h2>Perception &amp; paiements</h2>
+  <div class="head"><div><div class="eyebrow">Chaîne assiette → liquidation → recouvrement</div><h2>Perception et paiements</h2>
   <p>La note de perception est calculée par le système à partir de la base déclarée et des taux paramétrés. L'agent ne saisit jamais le montant, et chaque paiement est rattaché à une note.</p></div></div>
   <div class="flow"><span>Déclaration</span><em>→</em><span>Note de perception (calcul automatique)</span><em>→</em><span>Paiement Mobile Money / banque</span><em>→</em><span>Reçu avec code de vérification</span><em>→</em><span>Écriture au journal d'audit</span></div>
   <div class="grid g2">
@@ -797,7 +797,7 @@ function vControle(){
   const al=alerts(),rules=[...new Set(al.map(a=>a.rule))];const list=al.filter(a=>!cf||a.rule===cf).sort((a,b)=>({bad:0,warn:1,info:2}[a.sev]-{bad:0,warn:1,info:2}[b.sev]));
   const at=S.np.filter(n=>soldeNP(n)>0&&+NOW>n.ech).reduce((a,n)=>a+soldeNP(n),0);
   return `
-  <div class="head"><div><div class="eyebrow">Lutte contre le coulage des recettes</div><h2>Contrôle &amp; anti-fraude</h2>
+  <div class="head"><div><div class="eyebrow">Lutte contre le coulage des recettes</div><h2>Contrôle et anti-fraude</h2>
   <p>Le système croise registre, notes et paiements chaque nuit et classe les anomalies par gravité. Les inspecteurs travaillent sur une liste priorisée au lieu de contrôles au hasard.</p></div></div>
   <div class="grid g4">
     <div class="panel kpi"><div class="eyebrow">Anomalies ouvertes</div><div class="v">${al.length}</div><div class="s">${S.resolved.size} traitée(s) dans cette session</div></div>
@@ -836,20 +836,20 @@ bind.audit=()=>{
 
 /* ============ 06 Architecture ============ */
 function vArchi(){return `
-  <div class="head"><div><div class="eyebrow">Vision du Directeur Informatique · projet COREF-ENCORE</div><h2>Architecture cible &amp; feuille de route</h2>
+  <div class="head"><div><div class="eyebrow">Vision du Directeur Informatique · projet COREF-ENCORE</div><h2>Architecture cible et feuille de route</h2>
   <p>Un système intégré, construit sur des briques ouvertes et maîtrisées par la DGRMA, qui répond directement à l'axe 2 de la réforme : élargir l'assiette, réduire les écarts fiscaux et rendre l'administration transparente.</p></div></div>
   <div class="panel"><header><h3>Architecture en couches</h3></header><div class="layers">
     <div class="layer"><b>Canaux</b><div class="boxes"><span>Guichets des 8 ressorts</span><span>Application mobile hors ligne (recensement, perception terrain)</span><span>Portail contribuable : télédéclaration et télépaiement</span><span>USSD / SMS pour les zones sans internet</span></div></div>
-    <div class="layer"><b>Métier</b><div class="boxes"><span>Registre &amp; IFU</span><span>Assiette &amp; liquidation</span><span>Recouvrement &amp; contentieux</span><span>Contrôle &amp; anti-fraude</span><span>Quitus fiscal</span><span>Paramétrage des taux (édit provincial)</span></div></div>
+    <div class="layer"><b>Métier</b><div class="boxes"><span>Registre et IFU</span><span>Assiette et liquidation</span><span>Recouvrement et contentieux</span><span>Contrôle et anti-fraude</span><span>Quitus fiscal</span><span>Paramétrage des taux (édit provincial)</span></div></div>
     <div class="layer"><b>Interopérabilité</b><div class="boxes"><span>Passerelle API sécurisée</span><span>Opérateurs Mobile Money</span><span>Banques et compte du Trésor provincial</span><span>DGI / DGRAD (échange d'IFU et de NIF)</span><span>Cadastre, Division des mines, Transports</span></div></div>
     <div class="layer"><b>Données</b><div class="boxes"><span>PostgreSQL + PostGIS (géolocalisation)</span><span>Entrepôt décisionnel et tableaux de bord</span><span>Journal d'audit chaîné</span></div></div>
     <div class="layer"><b>Socle</b><div class="boxes"><span>Hébergement hybride : salle serveur Kindu + réplique cloud</span><span>Authentification unique, rôles, double facteur</span><span>Sauvegardes 3-2-1 · plan de reprise (PRA)</span><span>Énergie solaire + onduleurs, liaison VSAT de secours</span></div></div>
   </div></div>
   <div class="panel"><header><h3>Feuille de route sur 18 mois</h3></header><div class="phases">
-    <div class="phase"><div class="when">M0 – M3</div><h3>Diagnostic &amp; fondations</h3><ul><li>Audit SI et cartographie des processus</li><li>Schéma directeur informatique</li><li>Salle serveur, réseau, énergie</li><li>Équipe : 2 développeurs, 1 DBA, 1 admin système</li></ul></div>
-    <div class="phase"><div class="when">M3 – M8</div><h3>Registre &amp; perception</h3><ul><li>Migration et dédoublonnage des fichiers</li><li>IFU provincial</li><li>Notes de perception, reçus sécurisés</li><li>Pilote à Kindu</li></ul></div>
-    <div class="phase"><div class="when">M8 – M14</div><h3>Paiement &amp; terrain</h3><ul><li>Intégration Mobile Money et banques</li><li>Application mobile hors ligne</li><li>Extension aux 7 autres ressorts</li><li>Formation des agents</li></ul></div>
-    <div class="phase"><div class="when">M14 – M18</div><h3>Pilotage &amp; contrôle</h3><ul><li>Règles anti-fraude et recoupements</li><li>Tableaux de bord de direction</li><li>Portail contribuable</li><li>Interopérabilité DGI / DGRAD</li></ul></div>
+    <div class="phase"><div class="when">M0 – M3</div><h3>Diagnostic et fondations</h3><ul><li>Audit SI et cartographie des processus</li><li>Schéma directeur informatique</li><li>Salle serveur, réseau, énergie</li><li>Équipe : 2 développeurs, 1 DBA, 1 admin système</li></ul></div>
+    <div class="phase"><div class="when">M3 – M8</div><h3>Registre et perception</h3><ul><li>Migration et dédoublonnage des fichiers</li><li>IFU provincial</li><li>Notes de perception, reçus sécurisés</li><li>Pilote à Kindu</li></ul></div>
+    <div class="phase"><div class="when">M8 – M14</div><h3>Paiement et terrain</h3><ul><li>Intégration Mobile Money et banques</li><li>Application mobile hors ligne</li><li>Extension aux 7 autres ressorts</li><li>Formation des agents</li></ul></div>
+    <div class="phase"><div class="when">M14 – M18</div><h3>Pilotage et contrôle</h3><ul><li>Règles anti-fraude et recoupements</li><li>Tableaux de bord de direction</li><li>Portail contribuable</li><li>Interopérabilité DGI / DGRAD</li></ul></div>
   </div></div>
   <div class="grid g2">
     <div class="panel"><header><h3>Indicateurs de succès (cibles à 18 mois)</h3></header><ul class="tight">
